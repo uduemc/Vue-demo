@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>列表渲染、过滤与排序</title>
+</head>
+
+<body>
+    <!--
+    列表显示指令
+        1). 数组: v-for/index
+        2). 对象: v-for/key
+    
+    列表的更新显示
+        删除:item
+        替换:item
+    
+    列表的高级处理
+        列表过滤
+        列表排序
+    -->
+
+    <div id="app">
+        <h2>v-for 遍历数组</h2>
+        <ul>
+            <li v-for="(p, index) in persons" :key="index">
+                {{index}}==={{p.name}}==={{p.age}} ---
+                <button @click="deletep(index)">删除</button>
+                ---
+                <button @click="updatep(index)">更新</button>
+            </li>
+        </ul>
+        <h2>v-for 遍历对象</h2>
+        <ol>
+            <li v-for="(value, key) in persons[2]" :key="key">
+                value:{{value}}===key:{{key}}
+            </li>
+        </ol>
+    </div>
+
+    <div id="app1">
+        <h2>列表过滤、排序</h2>
+        <input type="text" v-model="searchName" />
+        <ul>
+            <li v-for="(item, index) in activePersons" :key="index">
+                {{index}}==={{item.name}}==={{item.age}}
+            </li>
+        </ul>
+        <p> age 排序 </p>
+        <button @click="changeOrder(1)">顺序</button>
+        <button @click="changeOrder(2)">倒序</button>
+        <button @click="changeOrder(0)">顺序</button>
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el: '#app',
+            data: {
+                persons: [
+                    { name: 'Jeff', age: 18 },
+                    { name: 'Tom', age: 19 },
+                    { name: 'Nana', age: 17 },
+                    { name: 'Rose', age: 11 },
+                    { name: 'Elem', age: 28 },
+                ]
+            },
+            methods: {
+                deletep: function (index) {
+                    this.persons.splice(index, 1);
+                },
+                updatep: function (index) {
+                    /**
+                     * 这里不能直接对 数组中对象进行直接修改操作
+                     * 会造成无法重新渲染的结果
+                     * 原理：vue 监视的是 persons 数组，对数组内对象的修改，vue 无法监视到，导致无法渲染
+                     * Vue 包含一组观察数组的变异方法，所以它们也将会触发视图更新。这些方法如下：
+                     * push()
+                     * pop()
+                     * shift()
+                     * unshift()
+                     * splice()
+                     * sort()
+                     * reverse()
+                     */
+                    let newPersion = {
+                        name:'new person name',
+                        age:88
+                    };
+                    this.persons.splice(index, 1, newPersion);
+                }
+            }
+        });
+        new Vue({
+            el:"#app1",
+            data:{
+                persons: [
+                    { name: 'Jeff', age: 18 },
+                    { name: 'Tom', age: 19 },
+                    { name: 'Nana', age: 17 },
+                    { name: 'Rose', age: 11 },
+                    { name: 'Elem', age: 28 },
+                ],
+                // 搜索的关键字变量
+                searchName:"",
+                // 定义排序的变量 0-原序 1-顺序 2-倒序
+                orderType:0
+            },
+            computed:{
+                activePersons:function(){
+                    const {persons, searchName, orderType} = this;
+                    let activePersons = [...persons];
+                    activePersons = activePersons.filter(function(obj){
+                        return obj.name.indexOf(searchName) >= 0
+                    });
+                    if(orderType != 0){
+                        if(orderType == 1){
+                            activePersons.sort(function(p1, p2){
+                                return p1.age - p2.age;
+                            });
+                        }else if (orderType == 2){
+                            activePersons.sort(function(p1, p2){
+                                return p2.age - p1.age;
+                            });
+                        }
+                    }
+                    return activePersons;
+                }
+            },
+            methods:{
+                changeOrder:function(option){
+                    this.orderType = option;
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤器</title>
+</head>
+<body>
+    <!--
+    理解过滤器
+        1). 功能：对咬显示的数据进行特定格式化后再显示
+        2). 注意：并没有改变原本的数据，可是产生新的对应的数据
+
+    定义和使用过滤器
+        1). 定义过滤器
+            Vue.filter(filterName, function(value[arg1, arg2...]){
+                // code...
+                return newValue;
+            })
+        2). 使用过滤器
+            <div>{{myData | filterName}}</div>
+            <div>{{myData | filterName(arg)}}</div>
+    -->
+
+    <div id="app">
+        <p>当前时间：{{currentTime}}</p>
+        <p>当前时间格式化完整：{{currentTime|formatDate}}</p>
+        <p>当前时间格式化日期：{{currentTime|formatDate('YYYY-MM-DD')}}</p>
+        <p>当前时间格式化时间：{{currentTime|formatDate('HH:mm:ss')}}</p>
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/moment.js/2.19.0/moment.js"></script>
+    <script type="text/javascript">
+        Vue.filter('formatDate', function(value, formatStr){
+            return moment(value).format(formatStr || 'YYYY-MM-DD HH:mm:ss');
+        });
+        new Vue({
+            el:'#app',
+            data:{
+                currentTime:new Date()
+            }
+        });
+    </script>
+</body>
+</html>

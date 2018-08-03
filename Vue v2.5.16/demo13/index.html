@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义插件</title>
+</head>
+<body>
+    <!--
+    说明
+        1). Vue 插件是一个包含 install 方法的对象
+        2). 通过 install 方法给 Vue 或 Vue 实例添加方法，定义全局指令等
+    -->
+    <div id="app">
+        <p v-my-directive="msg"></p>
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript" src="./myPlugin.js"></script>
+    <script type="text/javascript">
+        // 使用自定义插件
+        Vue.use(MyPlugin);
+        
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg: 'jeff'
+            }
+        });
+        // 调用自定义的静态方法
+        Vue.myGlobalMethod();
+        // 调用自定义的对象方法
+        vm.$myMethod();
+    </script>
+</body>
+</html>

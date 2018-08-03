@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>事件处理</title>
+</head>
+
+<body>
+    <!--
+    绑定监听
+        1). v-on:xxx="fun"
+        2). @xxx="fun"
+        3). @xxx="fun([param])"
+        4). 默认事件形参: event
+        5). 隐含属性对象: $event
+    
+    事件修饰符
+        1). .prevent: 阻止事件的默认行为 event.preventDefault()
+        2). .stop: 停止事件冒泡 event.stopPropagation()
+    
+    按键修饰符
+        1). .keycode: 操作的是某个 keycode 值的键
+        2). .keyName: 操作的某个按键名的键（少部分: enter）
+    -->
+    <div id="app">
+        <h2>绑定监听</h2>
+        <button @click="test1">test1</button>
+        <button @click="test2('abc')">test2</button>
+        <button @click="test3('abcd', $event)">test3</button>
+
+        <h2>事件修饰符</h2>
+        <a href="http://www.baidu.com/" @click.prevent="test4">百度</a>
+        <div style="width: 200px; height: 200px;background-color: red;" @click="test5">
+            <div style="width: 80px; height: 80px;background-color: blue;" @click.stop="test6"></div>
+        </div>
+
+        <h2>按键修饰符</h2>
+        <input type="text" @keyup.13="test7" />
+        <input type="text" @keyup.enter="test7" />
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+                test1: function (){
+                    alert("I love you so much!");
+                },
+                test2: function (str){
+                    alert(str);
+                },
+                test3: function (str, event){
+                    alert(str + " " + event.target.textContent);
+                },
+                test4: function(){
+                    console.log("tag a click");
+                },
+                test5: function (str, event){
+                    console.log("test5");
+                },
+                test6: function(){
+                    // 通过 @click.stop 阻止冒泡
+                    console.log("test6");
+                },
+                test7:function (){
+                    console.log("enter enter");
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>过滤&动画</title>
+    <style type="text/css">
+        .xxx-enter-active, .xxx-leave-active{
+            transition:opacity 1s;
+        }
+        .xxx-enter, .xxx-leave-to{
+            opacity:0;
+        }
+
+        .name-enter-active{
+            transition:all 1s;
+        }
+        .name-leave-active{
+            transition:all 3s;
+        }
+        .name-enter, .name-leave-to{
+            opacity: 0;
+            transform:translateX(20px)
+        }
+    </style>
+</head>
+<body>
+    <!--
+    vue 动画的理解
+        1). 操作 css 的 trasition 或 animation
+        2). vue 会给目标元素添加/移除特定的class
+        3). 过滤的相关类名
+            xxx-enter-action: 指定显示的 transition
+            xxx-leave-action: 指定隐藏的 transition
+            xxx-enter/xxx-leave-to: 指定隐藏时的样式
+
+    基本过滤动画的编码
+        1). 在目标元素外包囊 <transition name="xxx" >
+        2). 定义 css 样式
+            指定过滤样式： transition
+            指定隐藏时的样式：opacity/其他
+        
+    -->
+    <div id="app">
+        <button @click="show=!show">Toggle</button>
+        <transition name="xxx">
+            <p v-show="show">hello</p>
+        </transition>
+    </div>
+    <div id="app1">
+        <button @click="show=!show">Toggle</button>
+        <transition name="name">
+            <p v-show="show">hello</p>
+        </transition>
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript">
+        new Vue({
+            el:'#app',
+            data:{
+                show:true
+            }
+        });
+        new Vue({
+            el:'#app1',
+            data:{
+                show:true
+            }
+        });
+    </script>
+
+    <hr>
+    <img src="./transition.png" alt="">
+</body>
+</html>

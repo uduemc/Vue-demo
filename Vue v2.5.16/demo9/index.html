@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue 实例生命周期</title>
+</head>
+<body>
+    <!--
+    初始化显示
+        * beforeCreate()
+        * created()
+        * beforeMount()
+        * mounted()
+    更新状态： this.xxx = value
+        * beforeUpdate()
+        * updated()
+    销毁 vue 实例： vm.$destory()
+        * beforeDestory()
+        * destoryed()
+    -->
+    <!--
+    常用的生命周期方法
+        1). created()/mounted(): 发送 ajax 请求，启动定时器等异步任务
+        2). beforeDestory(): 做收尾工作，如：清除定时器
+    -->
+    <div id="app">
+        <button @click="destoryVue">destory vue</button>
+        <p v-show="isShow">{{msg}}</p>
+    </div>
+    <script type="text/javascript" src="../static/vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el:'#app',
+            data:{
+                msg:"I love you so much!",
+                isShow: true
+            },
+            
+            // 初始化
+            beforeCreate:function(){
+                console.log('beforeCreate()');
+            },
+            created:function(){
+                console.log('created()');
+            },
+            beforeMount:function(){
+                console.log('beforeMount()');
+            },
+            mounted:function(){
+                console.log('mounted()');
+                this.intervalId = setInterval(()=>{
+                    console.log('----------------');
+                    this.isShow = !this.isShow;
+                },1000);
+            },
+            // 更新
+            beforeUpdate:function(){
+                console.log('beforeUpdate()');
+            },
+            updated:function(){
+                console.log('updated()');
+            },
+            // 销毁
+            beforeDestroy:function(){
+                console.log('beforeDestory()');
+                clearInterval(this.intervalId);
+            },
+            destroyed:function(){
+                console.log('destoryed()');
+            },
+            methods:{
+                destoryVue:function(){
+                    vm.$destroy();
+                }
+            }
+        });
+    </script>
+
+    <hr/>
+    <h2>Vue 的生命周期图示</h2>
+    <img src="./lifecycle.png"></img:src>
+</body>
+</html>
